@@ -1,6 +1,6 @@
-```repos
+```
 #Firstly install package catR
-install.packages("catR", repos= "https://cran.rstudio.com")
+install.packages("catR")
 
 #Activate installed package
 library("catR")
@@ -26,6 +26,8 @@ catResults<- simulateRespondents(thetas = theta, itemBank = itPar,
                                  output = c("","catR","txt"))
 
 plot(catResults, type = "all")
+
+**Example 2**
 
 #Before data generation, a 'data' object was defined in order to save generated patterns into it. Data matrix should have as many row as the length of theta and as many columns as the number of items.
 data<-matrix(NA,length(theta), nrow(itPar))
