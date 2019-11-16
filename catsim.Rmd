@@ -5,6 +5,8 @@ install.packages("catR")
 #Activate installed package
 library("catR")
 
+**Example 1**
+
 #The function genDichoMatrix creates a matrix of item parameters for dichotomous IRT models.
 #Item pool is generated with 3PL. So a,b,c parameters should be specified.
 itPar<-genDichoMatrix(items=300, model = "3PL", aPrior = c("unif", 0.5, 2), 
@@ -12,15 +14,15 @@ itPar<-genDichoMatrix(items=300, model = "3PL", aPrior = c("unif", 0.5, 2),
                       seed = 1)
 
 #theta values were generated with standard normal distribution and stored in theta object.
-theta<-rnorm(200,0,1)
+theta<-rnorm(2000,0,1)
 
 start <- list(nrItems=1, theta = 0, startSelect="MFI", randomesque = 10)
 test <- list(method = "EAP", itemSelect = "MFI",  priorDist = "norm",  
              priorPar = c(0, 1), randomesque = 10)
-stop <- list(rule ="length", thr = 20) 
+stop <- list(rule ="length", thr = 45) 
 final <- list(method = "EAP",  priorDist = "norm", priorPar = c(0, 1))
 
-catResults<- simulateRespondents(thetas = theta, itemBank = itPar, 
+catResults1<- simulateRespondents(thetas = theta, itemBank = itPar, 
                                  rmax = 0.2, start = start, test = test, stop = stop,
                                  final = final, save.output = TRUE, 
                                  output = c("","catR","txt"))
@@ -29,29 +31,37 @@ plot(catResults, type = "all")
 
 **Example 2**
 
-#Before data generation, a 'data' object was defined in order to save generated patterns into it. Data matrix should have as many row as the length of theta and as many columns as the number of items.
+#Before data generation, a 'data' object was defined in order to save generated patterns into it. 
+#Data matrix should have as many row as the length of theta and as many columns as the number of items.
 data<-matrix(NA,length(theta), nrow(itPar))
 for (i in 1:length(theta)){
   data[i,]<-genPattern(th = theta[i], itPar)}
 
-for (i in c(1:10)) print(i^2) #run
+
 start <- list(nrItems=1, theta = 0, startSelect="MFI", randomesque = 10)
 test <- list(method = "EAP", itemSelect = "MFI",  priorDist = "norm", 
              priorPar = c(0, 1), randomesque = 10)
-
 #The test stops either the standard error reaches 0.3 or 45 item is administered. It is terminated on when one of the criterion is met.
-stop <- list(rule =c("precision", "length"), thr = c(0.3, 20)) 
+stop <- list(rule =c("precision", "length"), thr = c(0.3, 45)) 
 final <- list(method = "EAP",  priorDist = "norm", priorPar = c(0, 1))
 
 # Maximum exposure rate restricted to 0.2
-catResults<-simulateRespondents(thetas = theta, itemBank = itPar, 
+catResults2<-simulateRespondents(thetas = theta, itemBank = itPar, 
                                 responsesMatrix=data, rmax = 0.2, 
                                 start = start, test = test, stop = stop, 
                                 final = final)
 
+**Example 3**
+start <- list(nrItems=1, theta = 0, startSelect="MFI", randomesque = 10)
+test <- list(method = "EAP", itemSelect = "MFI",  priorDist = "norm",  
+             priorPar = c(0, 1), randomesque = 10)
+stop <- list(rule ="length", thr = 45) 
+final <- list(method = "EAP",  priorDist = "norm", priorPar = c(0, 1))
 
+# r indicates the number of replication
+# Different results for each replication is saved in different files with output command. 
 for (r in 1:10) {
-  catResults<-simulateRespondents(thetas=theta, itemBank=itPar, 
+  catResults3<-simulateRespondents(thetas=theta, itemBank=itPar, 
                                   start = start, test = test, stop=stop, 
                                   final = final, genSeed=1:length(theta),
                                   rmax=0.20, save.output = T,
