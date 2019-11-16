@@ -1,4 +1,4 @@
-```
+```repos
 #Firstly install package catR
 install.packages("catR")
 
