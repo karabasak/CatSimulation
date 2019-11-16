@@ -1,12 +1,4 @@
----
-title: "Untitled"
-output: html_document
----
-options(repos=structure(c(CRAN="http://cran.r-project.org")))
-options(repos="https://cran.rstudio.com")
-install.packages("pscl", repos = "https://cran.rstudio.com")
-
-```{r}
+```repos
 #Firstly install package catR
 install.packages("catR", repos= "https://cran.rstudio.com")
 
@@ -56,7 +48,7 @@ catResults<-simulateRespondents(thetas = theta, itemBank = itPar,
                                 final = final)
 
 
-for (r in 1:2) {
+for (r in 1:10) {
   catResults<-simulateRespondents(thetas=theta, itemBank=itPar, 
                                   start = start, test = test, stop=stop, 
                                   final = final, genSeed=1:length(theta),
